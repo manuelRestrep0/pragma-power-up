@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost/powerup
+    username: root
+    password: 123456789
+  jpa:
+    hibernate:
+      ddl-auto: update
