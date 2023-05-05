@@ -1,7 +1,10 @@
 package com.pragma.usuariomicroservice.domain.usecase;
 
 import com.pragma.usuariomicroservice.domain.api.IRolServicePort;
+import com.pragma.usuariomicroservice.domain.model.Rol;
 import com.pragma.usuariomicroservice.domain.spi.IRolPersistencePort;
+
+import java.util.List;
 
 public class RolUseCase implements IRolServicePort {
 
@@ -11,4 +14,8 @@ public class RolUseCase implements IRolServicePort {
         this.rolPersistencePort = rolPersistencePort;
     }
 
+    @Override
+    public List<Rol> getRoles() {
+        return this.rolPersistencePort.getRoles();
+    }
 }

@@ -7,4 +7,6 @@ public interface IUsuarioPersistencePort {
     void saveUsuario(Usuario usuario);
 
     void deleteUsuario(Usuario usuario);
+
+    Usuario getUsuario(Long id);
 }

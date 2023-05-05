@@ -1,5 +1,6 @@
 package com.pragma.usuariomicroservice.adapters.jpa.mysql.entity;
 
+import com.pragma.usuariomicroservice.domain.model.Rol;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,8 +24,9 @@ public class UsuarioEntity {
     private String apellido;
     private String numeroDocumento;
     private String celular;
-    private Date fechaNacimiento;
+    private String fechaNacimiento;
     private String correo;
     private String clave;
-    private String id_rol;
+    @OneToOne
+    private RolEntity idRol;
 }

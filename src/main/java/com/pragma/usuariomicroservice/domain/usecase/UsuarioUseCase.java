@@ -20,4 +20,9 @@ public class UsuarioUseCase implements IUsuarioServicePort {
     public void deleteUsuario(Usuario usuario) {
         this.usuarioPersistencePort.deleteUsuario(usuario);
     }
+
+    @Override
+    public Usuario getUsuario(Long id) {
+        return null;
+    }
 }

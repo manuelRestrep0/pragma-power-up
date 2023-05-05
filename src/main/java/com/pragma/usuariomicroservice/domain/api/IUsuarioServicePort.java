@@ -7,4 +7,6 @@ public interface IUsuarioServicePort {
     void saveUsuario(Usuario usuario);
 
     void deleteUsuario(Usuario usuario);
+
+    Usuario getUsuario(Long id);
 }
