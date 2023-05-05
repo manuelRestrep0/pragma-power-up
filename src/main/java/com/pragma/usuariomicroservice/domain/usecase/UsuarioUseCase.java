@@ -1,5 +1,6 @@
 package com.pragma.usuariomicroservice.domain.usecase;
 
+import com.pragma.usuariomicroservice.configuration.Constants;
 import com.pragma.usuariomicroservice.domain.api.IUsuarioServicePort;
 import com.pragma.usuariomicroservice.domain.model.Usuario;
 import com.pragma.usuariomicroservice.domain.spi.IUsuarioPersistencePort;

@@ -12,4 +12,5 @@ public class UsuarioRequestDto {
     private String numeroDocumento;
     private String celular;
     private String fechaNacimiento;
+    private String clave;
 }
