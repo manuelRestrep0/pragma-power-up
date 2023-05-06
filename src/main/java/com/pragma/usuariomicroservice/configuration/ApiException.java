@@ -1,4 +1,4 @@
-package com.pragma.usuariomicroservice.adapters.http.exceptions;
+package com.pragma.usuariomicroservice.configuration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

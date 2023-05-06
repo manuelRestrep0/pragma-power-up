@@ -26,6 +26,8 @@ public class ValidacionesGenerales {
     public ValidacionesGenerales() {
     }
 
+
+
     public void validarCorreo(String correo){
         expresionRegular = "[A-Za-z0-9+_.-]+@(.+\\.[A-Za-z]+)$";
         respuestaValidacion = ejecutarMatcher(correo);
