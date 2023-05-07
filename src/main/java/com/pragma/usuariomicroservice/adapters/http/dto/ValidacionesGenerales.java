@@ -55,7 +55,15 @@ public class ValidacionesGenerales {
     }
 
     public void validarFechaNacimientoFormato(String fechaNacimiento){
-        stringToDate(fechaNacimiento);
+        expresionRegular = "(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-(19|20)\\d{2}$|^(0[1-9]|[1-2][0-9])-02-(19|20)([02468][048]|[13579][26])$|^(0[1-9]|[1-2][0-9]|30)-(0[13-9]|1[0-2])-(19|20)\\d{2}$|^(0[1-9]|1[0-9]|2[0-8])-02-(19|20)\\d{2}$|^(31)-(0[13578]|1[02])-(19|20)\\d{2}$|^(29)-(02)-(19|20)([02468][1235679]|[13579][01345789])$";
+        respuestaValidacion = ejecutarMatcher(fechaNacimiento);
+        if(!respuestaValidacion){
+            throw new FechaNacimientoMalFormatoException(Constants.FECHA_NACIMIENTO_MAL_FORMATO);
+        }
+        LocalDate fecha = stringToDate(fechaNacimiento);
+        if(fecha.isAfter(LocalDate.now())){
+            throw new FechaNacimientoMalFormatoException(Constants.FECHA_NACIMIENTO_NO_EXISTE);
+        }
     }
 
     private boolean ejecutarMatcher(String validar){
@@ -64,13 +72,8 @@ public class ValidacionesGenerales {
         return matcher.find();
     }
 
-    protected LocalDate stringToDate(String fecha){
-        DateTimeFormatter formatter = null;
-        try{
-            formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        } catch (DateTimeParseException e){
-            throw new FechaNacimientoMalFormatoException(Constants.FECHA_NACIMIENTO_MAL_FORMATO);
-        }
+    protected LocalDate stringToDate(String fecha) throws DateTimeParseException{
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return LocalDate.parse(fecha,formatter);
     }
 }
