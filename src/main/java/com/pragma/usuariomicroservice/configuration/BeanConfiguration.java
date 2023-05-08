@@ -2,6 +2,7 @@ package com.pragma.usuariomicroservice.configuration;
 
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.adapter.UsuarioMysqlAdapter;
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.mapper.UsuarioEntityMapper;
+import com.pragma.usuariomicroservice.adapters.jpa.mysql.repository.IRolRepository;
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.repository.IUsuarioRepository;
 import com.pragma.usuariomicroservice.domain.api.IUsuarioServicePort;
 import com.pragma.usuariomicroservice.domain.spi.IUsuarioPersistencePort;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class BeanConfiguration {
     private final IUsuarioRepository usuarioRepository;
     private final UsuarioEntityMapper usuarioEntityMapper;
+    private final IRolRepository rolRepository;
 
     @Bean
     public IUsuarioServicePort usuarioServicePort(){
@@ -23,6 +25,6 @@ public class BeanConfiguration {
 
     @Bean
     public IUsuarioPersistencePort usuarioPersistencePort() {
-        return new UsuarioMysqlAdapter(usuarioRepository, usuarioEntityMapper);
+        return new UsuarioMysqlAdapter(usuarioRepository,usuarioEntityMapper);
     }
 }
