@@ -1,4 +1,4 @@
-package com.pragma.usuariomicroservice.adapters.http.dto;
+package com.pragma.usuariomicroservice.domain.usecase.validaciones;
 
 import com.pragma.usuariomicroservice.adapters.http.exceptions.NoEsMayorDeEdadException;
 import com.pragma.usuariomicroservice.configuration.Constants;

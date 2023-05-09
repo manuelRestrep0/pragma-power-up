@@ -4,7 +4,7 @@ import com.pragma.usuariomicroservice.domain.model.Usuario;
 
 public interface IUsuarioServicePort {
 
-    void saveUsuario(Usuario usuario);
+    void guardarPropietario(Usuario usuario);
 
     void deleteUsuario(Usuario usuario);
 

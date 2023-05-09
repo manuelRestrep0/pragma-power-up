@@ -16,7 +16,7 @@ public class UsuarioMysqlAdapter implements IUsuarioPersistencePort {
     private final IUsuarioRepository usuarioRepository;
     private final UsuarioEntityMapper usuarioEntityMapper;
     @Override
-    public void saveUsuario(Usuario usuario) {
+    public void guardarUsuario(Usuario usuario) {
         if(usuarioRepository.findUsuarioEntityByCorreo(usuario.getCorreo()).isPresent()){
             throw new UsuarioYaExistenteException(Constants.USUARIO_YA_EXISTE_CORREO);
         }
