@@ -14,6 +14,7 @@ public class Constants {
     public static final String DOCUMENTO_MAL_FORMULADO_EXCEPTION = "El numero de documento no es de un formato valido.";
     public static final String CELULAR_MAL_FORMULADO_EXCEPTION = "El numero de celular no es correcto.";
     public static final String CELULAR_LONGITUD_EXCEPTION = "El numero de celular debe tener entre 8 y 13 caracteres contando el caracter '+'.";
+    public static final String USUARIO_NO_REGISTRADO = "El usuario no se encuentra registrado";
     public static final String FECHA_NACIMIENTO_MAL_FORMATO  = "La fecha de nacimiento no tiene el formato correcto.";
     public static final String NO_ES_MAYOR_DE_EDAD = "El propietario debe ser mayor de edad.";
     public static final String RESPONSE_MESSAGE_KEY = "mensaje";

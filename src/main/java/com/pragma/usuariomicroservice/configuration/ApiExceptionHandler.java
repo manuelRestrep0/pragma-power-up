@@ -5,6 +5,7 @@ import com.pragma.usuariomicroservice.adapters.http.exceptions.CorreoMalFormulad
 import com.pragma.usuariomicroservice.adapters.http.exceptions.DocumentoMalFormuladoException;
 import com.pragma.usuariomicroservice.adapters.http.exceptions.FechaNacimientoMalFormatoException;
 import com.pragma.usuariomicroservice.adapters.http.exceptions.NoEsMayorDeEdadException;
+import com.pragma.usuariomicroservice.adapters.http.exceptions.UsuarioNoSeEncuentraRegistradoException;
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.exceptions.UsuarioYaExistenteException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,8 @@ public class ApiExceptionHandler {
             CelularMalFormuladoException.class,
             FechaNacimientoMalFormatoException.class,
             NoEsMayorDeEdadException.class,
-            UsuarioYaExistenteException.class})
+            UsuarioYaExistenteException.class,
+            UsuarioNoSeEncuentraRegistradoException.class})
     public ResponseEntity<Object> BadRequestExceptionHandler(RuntimeException ex){
         ApiException apiException = new ApiException(
                 ex.getMessage(),

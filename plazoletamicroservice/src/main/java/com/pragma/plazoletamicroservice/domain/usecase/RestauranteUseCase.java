@@ -1,5 +1,6 @@
 package com.pragma.plazoletamicroservice.domain.usecase;
 
+import com.pragma.plazoletamicroservice.adapters.driving.feign.client.UsuarioFeignClient;
 import com.pragma.plazoletamicroservice.domain.api.IRestauranteServicePort;
 import com.pragma.plazoletamicroservice.domain.model.Restaurante;
 import com.pragma.plazoletamicroservice.domain.spi.IRestaurantePersistencePort;
@@ -7,6 +8,7 @@ import com.pragma.plazoletamicroservice.domain.usecase.validaciones.Validaciones
 
 public class RestauranteUseCase implements IRestauranteServicePort {
     private final IRestaurantePersistencePort restaurantePersistencePort;
+    //private final UsuarioFeignClient feignClient;
 
     public RestauranteUseCase(IRestaurantePersistencePort restaurantePersistencePort) {
         this.restaurantePersistencePort = restaurantePersistencePort;
@@ -14,7 +16,6 @@ public class RestauranteUseCase implements IRestauranteServicePort {
 
     @Override
     public void crearRestaurante(Restaurante restaurante) {
-        //TODO: Validaciones
         ValidacionesRestaurante validacionesRestaurante = new ValidacionesRestaurante();
         validacionesRestaurante.validarNombre(restaurante.getNombre());
 

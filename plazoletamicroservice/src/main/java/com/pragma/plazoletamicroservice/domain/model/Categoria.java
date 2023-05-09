@@ -1,14 +1,14 @@
-package com.pragma.usuariomicroservice.domain.model;
+package com.pragma.plazoletamicroservice.domain.model;
 
-public class Rol {
+public class Categoria {
     private Long id;
     private String nombre;
     private String descripcion;
 
-    public Rol() {
+    public Categoria() {
     }
 
-    public Rol(Long id, String nombre, String descripcion) {
+    public Categoria(Long id, String nombre, String descripcion) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;

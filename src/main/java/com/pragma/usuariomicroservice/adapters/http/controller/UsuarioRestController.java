@@ -11,6 +11,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +26,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UsuarioRestController {
 
-    private final IUsuarioHandler IUsuarioHandler;
-
+    private final IUsuarioHandler usuarioHandler;
 
     @Operation(summary = "Agregar un nuevo propietario",
     responses = {
@@ -36,9 +37,16 @@ public class UsuarioRestController {
     })
     @PostMapping("/propietario")
     public ResponseEntity<Map<String, String>> crearPropietario(@Valid @RequestBody UsuarioRequestDto usuarioRequestDto){
-        IUsuarioHandler.savePropietario(usuarioRequestDto);
+        //ROL DE ADMINISTRADOR
+        usuarioHandler.savePropietario(usuarioRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY,Constants.PROPIETARIO_CREADO_MENSAJE)
         );
     }
+
+    @GetMapping("/validar-propietario/{id}")
+    public Boolean validarRolPropietario(@PathVariable("id") Long id){
+        return usuarioHandler.validarPropietario(id);
+    }
+
 }

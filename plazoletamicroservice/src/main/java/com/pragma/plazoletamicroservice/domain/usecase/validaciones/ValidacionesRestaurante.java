@@ -1,5 +1,8 @@
 package com.pragma.plazoletamicroservice.domain.usecase.validaciones;
 
+import com.pragma.plazoletamicroservice.configuration.Constants;
+import com.pragma.plazoletamicroservice.domain.exceptions.NombreRestauranteMalFormatoException;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,7 +17,7 @@ public class ValidacionesRestaurante {
         expresionRegular = "(?=.*[a-zA-Z])(?=.*[0-9]*)[a-zA-Z0-9\\ ]+$";
         respuestaValidacion = ejecutarMatcher(nombreRestaurante);
         if(!respuestaValidacion){
-            //TODO: exception nombre del restaurante no es correcto.
+            throw new NombreRestauranteMalFormatoException(Constants.NOMBRE_RESTAURANTE_MAL_FORMATO);
         }
 
     }

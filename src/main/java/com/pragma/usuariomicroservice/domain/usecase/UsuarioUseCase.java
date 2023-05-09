@@ -44,6 +44,12 @@ public class UsuarioUseCase implements IUsuarioServicePort {
 
     @Override
     public Usuario getUsuario(Long id) {
-        return null;
+         return this.usuarioPersistencePort.getUsuario(id);
+    }
+
+    @Override
+    public Boolean validarPropietario(Long id) {
+        Usuario usuario = this.usuarioPersistencePort.getUsuario(id);
+        return usuario.getIdRol().getId().equals(Constants.PROPIETARIO_ROL_ID);
     }
 }

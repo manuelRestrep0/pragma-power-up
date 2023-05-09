@@ -6,7 +6,9 @@ public class Constants {
     }
 
     public static final String RESPONSE_MESSAGE_KEY = "mensaje";
-
+    public static final String CREACION_EXITOSA_RESTAURANTE = "Se ha creado el restaurante.";
+    public static final String NOMBRE_RESTAURANTE_MAL_FORMATO = "El nombre del restaurante no puede ser solo numerico.";
+    public static final String NIT_YA_REGISTRADO = "El nit de este restaurante ya se encuentra registrado.";
     public static final String SWAGGER_TITLE_MESSAGE = "User API Pragma Power Up";
     public static final String SWAGGER_DESCRIPTION_MESSAGE = "User microservice";
     public static final String SWAGGER_VERSION_MESSAGE = "1.0.0";

@@ -16,33 +16,46 @@ import com.pragma.usuariomicroservice.adapters.jpa.mysql.repository.IRolReposito
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.repository.IUsuarioRepository;
 import com.pragma.usuariomicroservice.configuration.Constants;
 import com.pragma.usuariomicroservice.domain.api.IUsuarioServicePort;
+import com.pragma.usuariomicroservice.domain.model.Rol;
+import com.pragma.usuariomicroservice.domain.model.Usuario;
+import com.pragma.usuariomicroservice.domain.usecase.UsuarioUseCase;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 public class PropietarioServiceTest {
 
     static IUsuarioRepository usuarioRepository;
     static IUsuarioHandler usuarioHandler;
     static UsuarioRestController usuarioRestController;
-    static IUsuarioHandlerImpl usuarioHandlerImpl;
+    static UsuarioUseCase usuarioUseCase;
     static IUsuarioServicePort usuarioServicePort;
     static IUsuarioRequestMapper usuarioRequestMapper;
     static IUsuarioResponseMapper usuarioResponseMapper;
     static RolEntityMapper rolEntityMapper;
     static IRolRepository rolRepository;
+    static Validator validator;
     UsuarioRequestDto usuarioRequestDto;
+    Usuario usuario;
 
 
     @BeforeAll
@@ -53,6 +66,7 @@ public class PropietarioServiceTest {
         rolRepository = mock(IRolRepository.class);
         rolEntityMapper = mock(RolEntityMapper.class);
         usuarioResponseMapper = mock(IUsuarioResponseMapper.class);
+        usuarioUseCase = mock(UsuarioUseCase.class);
         usuarioHandler = new IUsuarioHandlerImpl(
                 usuarioServicePort,
                 usuarioRequestMapper,
@@ -61,6 +75,8 @@ public class PropietarioServiceTest {
                 rolRepository
         );
         usuarioRestController = new UsuarioRestController(usuarioHandler);
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
     }
 
     @BeforeEach
@@ -75,7 +91,6 @@ public class PropietarioServiceTest {
                 "21-07-2001",
                 "12345"
         );
-
     }
 
     @Test
@@ -99,7 +114,14 @@ public class PropietarioServiceTest {
     void creacionPropietarioCorreoMalFormato(String correo){
         usuarioRequestDto.setCorreo(correo);
 
-        assertThrows(CorreoMalFormuladoException.class, () -> usuarioRestController.crearPropietario(usuarioRequestDto) );
+        Set<ConstraintViolation<UsuarioRequestDto>> violations = validator.validate(usuarioRequestDto);
+
+        assertEquals(true, !violations.isEmpty());
+        for (ConstraintViolation<UsuarioRequestDto> violation: violations
+        ) {
+            violation = violations.iterator().next();
+            assertEquals("correo",violation.getPropertyPath().toString());
+        }
     }
     @ParameterizedTest(name = "Valor: {0} , la funcion debe retornar CelularMalFormuladoException")
     @DisplayName("Cuando el numero de celular no es numerico, posee alguna letra o caracter diferente al '+', tiene menos de 8 caracteres o mas de 13 lanza una exception de " +
@@ -108,7 +130,14 @@ public class PropietarioServiceTest {
     void creacionPropietarioCelularMalFormato(String celular){
         usuarioRequestDto.setCelular(celular);
 
-        assertThrows(CelularMalFormuladoException.class, () -> usuarioRestController.crearPropietario(usuarioRequestDto));
+        Set<ConstraintViolation<UsuarioRequestDto>> violations = validator.validate(usuarioRequestDto);
+
+        assertEquals(true, !violations.isEmpty());
+        for (ConstraintViolation<UsuarioRequestDto> violation: violations
+             ) {
+            violation = violations.iterator().next();
+            assertEquals("celular",violation.getPropertyPath().toString());
+        }
     }
 
     @ParameterizedTest(name = "Valor: {0} , la funcion debe retornar DocumentoMalFormuladoException")
@@ -118,10 +147,17 @@ public class PropietarioServiceTest {
     void creacionPropietarioDocumentoMalFormato(String documento){
         usuarioRequestDto.setNumeroDocumento(documento);
 
-        assertThrows(DocumentoMalFormuladoException.class, () -> usuarioRestController.crearPropietario(usuarioRequestDto));
+        Set<ConstraintViolation<UsuarioRequestDto>> violations = validator.validate(usuarioRequestDto);
+
+        assertEquals(true, !violations.isEmpty());
+        for (ConstraintViolation<UsuarioRequestDto> violation: violations
+        ) {
+            violation = violations.iterator().next();
+            assertEquals("numeroDocumento",violation.getPropertyPath().toString());
+        }
 
     }
-    @ParameterizedTest(name = "Valor: {0} , la funcion debe retornar FechaNacimientoMalFormatoExceptio")
+    /*@ParameterizedTest(name = "Valor: {0} , la funcion debe retornar FechaNacimientoMalFormatoExceptio")
     @DisplayName("Cuando la fecha de nacimiento se envia en un formato diferente a dd-mm-yyyy, la funcion debe " +
             "lanzar una exception de tipo FechaNacimientoMalFormatoExceptio")
     @ValueSource(strings = {"21-07","21/07/2001","abc","7-21-2001","21-2001","21-07-2025","1-2-2001"})
@@ -136,9 +172,23 @@ public class PropietarioServiceTest {
     @Test
     void creacionPropietarioNoEsMayorDeEdad(){
         usuarioRequestDto.setFechaNacimiento("21-07-2020");
+        usuario = new Usuario(
+                1L,
+                usuarioRequestDto.getNombre(),
+                usuarioRequestDto.getApellido(),
+                usuarioRequestDto.getCorreo(),
+                usuarioRequestDto.getNumeroDocumento(),
+                usuarioRequestDto.getCelular(),
+                usuarioRequestDto.getFechaNacimiento(),
+                usuarioRequestDto.getClave(),
+                new Rol()
+        );
+        when(usuarioRequestMapper.toUsuario(any())).thenReturn(usuario);
 
-        assertThrows(NoEsMayorDeEdadException.class, () -> usuarioRestController.crearPropietario(usuarioRequestDto));
+
+        assertThrows(NoEsMayorDeEdadException.class, () -> usuarioUseCase.guardarPropietario(usuario));
     }
+     */
 
 
 

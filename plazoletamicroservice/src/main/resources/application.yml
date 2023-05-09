@@ -6,3 +6,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+external:
+  usuariomicroservice:
+    base-url: http://localhost:8080/usuario
+
+server:
+  port: 8090

@@ -9,4 +9,5 @@ public interface IUsuarioServicePort {
     void deleteUsuario(Usuario usuario);
 
     Usuario getUsuario(Long id);
+    Boolean validarPropietario(Long id);
 }

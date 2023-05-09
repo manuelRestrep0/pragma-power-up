@@ -37,4 +37,9 @@ public class IUsuarioHandlerImpl implements IUsuarioHandler {
     public UsuarioResponseDto getUsuario(Long id) {
         return usuarioResponseMapper.usuarioToUsuarioResponse(usuarioServicePort.getUsuario(id));
     }
+
+    @Override
+    public Boolean validarPropietario(Long id) {
+        return usuarioServicePort.validarPropietario(id);
+    }
 }
