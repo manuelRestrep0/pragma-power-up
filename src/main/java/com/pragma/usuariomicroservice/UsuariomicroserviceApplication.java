@@ -2,10 +2,10 @@ package com.pragma.usuariomicroservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication()
+@EnableFeignClients
 public class UsuariomicroserviceApplication {
 
     public static void main(String[] args) {

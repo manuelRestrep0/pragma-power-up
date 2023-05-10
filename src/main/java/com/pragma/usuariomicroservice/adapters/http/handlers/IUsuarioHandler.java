@@ -10,4 +10,5 @@ public interface IUsuarioHandler {
     void deleteUsuario(UsuarioRequestDto usuarioRequestDto);
 
     UsuarioResponseDto getUsuario(Long id);
+    Boolean validarPropietario(Long id);
 }

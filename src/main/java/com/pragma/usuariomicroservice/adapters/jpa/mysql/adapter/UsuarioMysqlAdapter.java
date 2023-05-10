@@ -1,5 +1,6 @@
 package com.pragma.usuariomicroservice.adapters.jpa.mysql.adapter;
 
+import com.pragma.usuariomicroservice.adapters.http.exceptions.UsuarioNoSeEncuentraRegistradoException;
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.entity.UsuarioEntity;
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.exceptions.UsuarioYaExistenteException;
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.mapper.UsuarioEntityMapper;
@@ -16,7 +17,7 @@ public class UsuarioMysqlAdapter implements IUsuarioPersistencePort {
     private final IUsuarioRepository usuarioRepository;
     private final UsuarioEntityMapper usuarioEntityMapper;
     @Override
-    public void saveUsuario(Usuario usuario) {
+    public void guardarUsuario(Usuario usuario) {
         if(usuarioRepository.findUsuarioEntityByCorreo(usuario.getCorreo()).isPresent()){
             throw new UsuarioYaExistenteException(Constants.USUARIO_YA_EXISTE_CORREO);
         }
@@ -34,10 +35,10 @@ public class UsuarioMysqlAdapter implements IUsuarioPersistencePort {
     @Override
     public Usuario getUsuario(Long id) {
         Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findById(id);
-        Usuario usuario = new Usuario();
-        if(usuarioEntity.isPresent()){
-            usuario = usuarioEntityMapper.toUsuario(usuarioEntity.get());    
+        if(!usuarioEntity.isPresent()){
+            throw new UsuarioNoSeEncuentraRegistradoException(Constants.USUARIO_NO_REGISTRADO);
+
         }
-        return usuario;
+        return usuarioEntityMapper.toUsuario(usuarioEntity.get());
     }
 }
