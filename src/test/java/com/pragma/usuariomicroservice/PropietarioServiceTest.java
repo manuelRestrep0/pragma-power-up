@@ -2,11 +2,6 @@ package com.pragma.usuariomicroservice;
 
 import com.pragma.usuariomicroservice.adapters.http.controller.UsuarioRestController;
 import com.pragma.usuariomicroservice.adapters.http.dto.request.UsuarioRequestDto;
-import com.pragma.usuariomicroservice.adapters.http.exceptions.CelularMalFormuladoException;
-import com.pragma.usuariomicroservice.adapters.http.exceptions.CorreoMalFormuladoException;
-import com.pragma.usuariomicroservice.adapters.http.exceptions.DocumentoMalFormuladoException;
-import com.pragma.usuariomicroservice.adapters.http.exceptions.FechaNacimientoMalFormatoException;
-import com.pragma.usuariomicroservice.adapters.http.exceptions.NoEsMayorDeEdadException;
 import com.pragma.usuariomicroservice.adapters.http.handlers.IUsuarioHandler;
 import com.pragma.usuariomicroservice.adapters.http.handlers.impl.IUsuarioHandlerImpl;
 import com.pragma.usuariomicroservice.adapters.http.mapper.IUsuarioRequestMapper;
@@ -16,7 +11,6 @@ import com.pragma.usuariomicroservice.adapters.jpa.mysql.repository.IRolReposito
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.repository.IUsuarioRepository;
 import com.pragma.usuariomicroservice.configuration.Constants;
 import com.pragma.usuariomicroservice.domain.api.IUsuarioServicePort;
-import com.pragma.usuariomicroservice.domain.model.Rol;
 import com.pragma.usuariomicroservice.domain.model.Usuario;
 import com.pragma.usuariomicroservice.domain.usecase.UsuarioUseCase;
 import jakarta.validation.ConstraintViolation;
@@ -29,7 +23,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -37,10 +30,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 public class PropietarioServiceTest {
 
@@ -70,9 +61,7 @@ public class PropietarioServiceTest {
         usuarioHandler = new IUsuarioHandlerImpl(
                 usuarioServicePort,
                 usuarioRequestMapper,
-                usuarioResponseMapper,
-                rolEntityMapper,
-                rolRepository
+                usuarioResponseMapper
         );
         usuarioRestController = new UsuarioRestController(usuarioHandler);
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();

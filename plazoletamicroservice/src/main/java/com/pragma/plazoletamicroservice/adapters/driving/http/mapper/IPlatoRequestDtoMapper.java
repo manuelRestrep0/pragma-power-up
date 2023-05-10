@@ -11,7 +11,9 @@ import org.mapstruct.ReportingPolicy;
         unmappedSourcePolicy =  ReportingPolicy.IGNORE)
 public interface IPlatoRequestDtoMapper {
 
-    @Mapping(target = "idCategoria", ignore = true)
+    @Mapping(source = "idCategoria", target = "idCategoriaAux")
+    @Mapping(source = "idRestaurante", target = "idRestauranteAux")
     @Mapping(target = "idRestaurante", ignore = true)
+    @Mapping(target = "idCategoria", ignore = true)
     Plato toPlato(PlatoRequestDto platoRequestDto);
 }

@@ -1,6 +1,7 @@
 package com.pragma.plazoletamicroservice.adapters.driving.http.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import lombok.Setter;
 public class PlatoRequestDto {
     @NotBlank
     private String nombre;
-    @NotBlank
+    @NotNull
     private Long idCategoria;
     @NotBlank
     private String descripcion;
@@ -23,7 +24,7 @@ public class PlatoRequestDto {
     @Positive
     @Pattern(regexp = "^[0-9]+$")
     private String precio;
-    @NotBlank
+    @NotNull
     private Long idRestaurante;
     @NotBlank
     private String urlImagen;

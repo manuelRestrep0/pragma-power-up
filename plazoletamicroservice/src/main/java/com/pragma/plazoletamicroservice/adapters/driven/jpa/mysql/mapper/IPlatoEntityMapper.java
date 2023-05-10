@@ -7,7 +7,7 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        unmappedSourcePolicy = ReportingPolicy.ERROR)
+        unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface IPlatoEntityMapper {
 
     PlatoEntity toEntity(Plato plato);

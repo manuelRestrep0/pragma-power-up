@@ -2,6 +2,10 @@ package com.pragma.plazoletamicroservice.configuration;
 
 import com.pragma.plazoletamicroservice.adapters.driven.jpa.mysql.exceptions.NitYaRegistradoException;
 import com.pragma.plazoletamicroservice.domain.exceptions.NombreRestauranteMalFormatoException;
+import com.pragma.plazoletamicroservice.domain.exceptions.RestauranteNoEncontrado;
+import com.pragma.plazoletamicroservice.domain.exceptions.UsuarioNoPropietarioException;
+import feign.FeignException;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -19,7 +23,9 @@ import java.util.List;
 public class ApiExceptionHandler {
 
     @ExceptionHandler(value = {NombreRestauranteMalFormatoException.class,
-                                NitYaRegistradoException.class})
+                                NitYaRegistradoException.class,
+                                UsuarioNoPropietarioException.class,
+                                RestauranteNoEncontrado.class})
     public ResponseEntity<Object> BadRequestExceptionHandler(RuntimeException ex){
         ApiException apiException = new ApiException(
                 ex.getMessage(),
@@ -41,4 +47,15 @@ public class ApiExceptionHandler {
         }
         return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<Object> handleFeignStatusException(FeignException e, HttpServletResponse response) {
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                HttpStatus.BAD_REQUEST,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, HttpStatus.BAD_REQUEST);
+
+    }
+
 }
