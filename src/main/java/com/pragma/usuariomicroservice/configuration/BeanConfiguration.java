@@ -1,6 +1,7 @@
 package com.pragma.usuariomicroservice.configuration;
 
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.adapter.UsuarioMysqlAdapter;
+import com.pragma.usuariomicroservice.adapters.jpa.mysql.mapper.RolEntityMapper;
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.mapper.UsuarioEntityMapper;
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.repository.IRolRepository;
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.repository.IUsuarioRepository;
@@ -17,10 +18,11 @@ public class BeanConfiguration {
     private final IUsuarioRepository usuarioRepository;
     private final UsuarioEntityMapper usuarioEntityMapper;
     private final IRolRepository rolRepository;
+    private final RolEntityMapper rolEntityMapper;
 
     @Bean
     public IUsuarioServicePort usuarioServicePort(){
-        return new UsuarioUseCase(usuarioPersistencePort());
+        return new UsuarioUseCase(usuarioPersistencePort(),rolRepository,rolEntityMapper);
     }
 
     @Bean
