@@ -4,6 +4,10 @@ Este microservicio se encarga de las consultas que se hagan con la base de datos
 negocio referente a la creación de usuarios tales como: crear un propietario, crear un empleado, crear un cliente, validar el 
 rol de un usuario y entre otras funcionalidades.
 
+El puerto del microservicio es por defecto el 8080 y recuerde modificar los datos de acceso a la base de datos.
+
+URL swagger: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
 
 ## EndPoints: 
 
