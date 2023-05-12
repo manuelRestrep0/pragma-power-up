@@ -31,6 +31,7 @@ public class UsuarioRequestDto {
     @Positive(message = "el numero de celular no puede ser negativo")
     private String celular;
     @NotBlank
+    @Pattern(regexp = "(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-(19|20)\\d{2}$|^(0[1-9]|[1-2][0-9])-02-(19|20)([02468][048]|[13579][26])$|^(0[1-9]|[1-2][0-9]|30)-(0[13-9]|1[0-2])-(19|20)\\d{2}$|^(0[1-9]|1[0-9]|2[0-8])-02-(19|20)\\d{2}$|^(31)-(0[13578]|1[02])-(19|20)\\d{2}$|^(29)-(02)-(19|20)([02468][1235679]|[13579][01345789])$")
     private String fechaNacimiento;
     @NotBlank
     private String clave;
