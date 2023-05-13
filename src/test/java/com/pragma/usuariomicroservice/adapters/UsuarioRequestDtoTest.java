@@ -12,12 +12,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
-
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ContextConfiguration(classes = UsuarioRequestDtoTest.class)
+@ContextConfiguration(classes = UsuarioRequestDto.class)
 @SpringBootTest
 public class UsuarioRequestDtoTest {
     static Validator validator;
