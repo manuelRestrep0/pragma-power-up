@@ -17,7 +17,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ContextConfiguration(classes = UsuarioRequestDtoTest.class)
+@ContextConfiguration(classes = UsuarioRequestDto.class)
 @SpringBootTest
 public class UsuarioRequestDtoTest {
     static Validator validator;
@@ -93,4 +93,6 @@ public class UsuarioRequestDtoTest {
         }
 
     }
+
+    //testear caso correcto.
 }
