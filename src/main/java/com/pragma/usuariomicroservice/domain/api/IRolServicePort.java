@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface IRolServicePort {
 
+    Rol getRol(Long id);
+
     List<Rol> getRoles();
 }

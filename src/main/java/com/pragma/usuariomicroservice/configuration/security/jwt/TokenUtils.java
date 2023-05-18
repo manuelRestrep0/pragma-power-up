@@ -1,52 +1,89 @@
 package com.pragma.usuariomicroservice.configuration.security.jwt;
 
+import com.pragma.usuariomicroservice.adapters.jpa.mysql.adapter.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+
+@Component
 public class TokenUtils {
-    private static final String ACCESS_TOKEN_SECRET = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.nZU_gPcMXkWpkCUpJceSxS7lSickF0tTImHhAR949Z-Nt69LgW8G6lid-mqd9B579tYM8C4FN2jdhR2VRMsjtA";
-    private static final Long ACCESS_TOKEN_VALIDITY_SECONDS = 2_582_000L;
+    private final static Logger logger = LoggerFactory.getLogger(TokenUtils.class);
+    @Value("${jwt.secret}")
+    private String secret;
+    @Value("${jwt.expiration}")
+    private Long expiration = 3600000L;
 
-    private TokenUtils(){
-        throw new IllegalStateException("Utility class");
-    }
-    public static String createToken(String nombre, String email){
-        long expirationTime = ACCESS_TOKEN_VALIDITY_SECONDS * 1000;
+    public String createToken(Authentication authentication){
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetailsImpl usuario = (UserDetailsImpl) authentication.getPrincipal();
+        Long id= usuario.getId();
+        String nombre = usuario.getNombre();
+        String email = usuario.getEmail();
+        String roles = usuario.getAuthorities().iterator().next().getAuthority();
+        long expirationTime = expiration * 180;
         Date expirationDate = new Date(System.currentTimeMillis() + expirationTime);
-
         Map<String, Object> extra = new HashMap<>();
+        extra.put("id usuario",id);
         extra.put("nombre",nombre);
-
+        extra.put("rol",roles);
         return Jwts.builder()
                 .setSubject(email)
                 .setExpiration(expirationDate)
                 .addClaims(extra)
-                .signWith(Keys.hmacShaKeyFor(ACCESS_TOKEN_SECRET.getBytes()))
+                .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
                 .compact();
     }
 
-    public static UsernamePasswordAuthenticationToken getAuthetication(String token){
+    public UsernamePasswordAuthenticationToken getAuthetication(String token){
         try{
             Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
+                    .setSigningKey(secret.getBytes())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-
             String email = claims.getSubject();
-
             return new UsernamePasswordAuthenticationToken(email,null, Collections.emptyList());
         } catch (JwtException e){
             return null;
         }
-
+    }
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token);
+            return true;
+        } catch (MalformedJwtException e) {
+            logger.error("token mal formado");
+        } catch (UnsupportedJwtException e) {
+            logger.error("token no soportado");
+        } catch (ExpiredJwtException e) {
+            logger.error("token expirado");
+        } catch (IllegalArgumentException e) {
+            logger.error("token vacío");
+        } catch (SignatureException e) {
+            logger.error("fail en la firma");
+        }
+        return false;
+    }
+    public String getRolesFromToken(String token) {
+        return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody().get("rol",String.class);
     }
 }

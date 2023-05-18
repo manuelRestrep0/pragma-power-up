@@ -1,25 +1,25 @@
 package com.pragma.usuariomicroservice.adapters.jpa.mysql.adapter;
 
-import com.pragma.usuariomicroservice.adapters.jpa.mysql.entity.RolEntity;
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.entity.UsuarioEntity;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
 
+    private Long id;
     private String nombre;
     private String nombreUsuario;
     private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(String nombre, String nombreUsuario, String email, String password,
+    public UserDetailsImpl(Long id, String nombre, String nombreUsuario, String email, String password,
                            Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
         this.nombre = nombre;
         this.nombreUsuario = nombreUsuario;
         this.email = email;
@@ -27,10 +27,9 @@ public class UserDetailsImpl implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static UserDetailsImpl build(UsuarioEntity usuario, List<RolEntity> roles) {
-        List<GrantedAuthority> authorities = roles.stream()
-                .map(rol -> new SimpleGrantedAuthority(rol.getNombre())).collect(Collectors.toList());
-        return new UserDetailsImpl(usuario.getNombre(), usuario.getNumeroDocumento(), usuario.getCorreo(),
+    public static UserDetailsImpl build(UsuarioEntity usuario) {
+        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(usuario.getIdRol().getNombre());
+        return new UserDetailsImpl(usuario.getId(),usuario.getNombre(), usuario.getNumeroDocumento(), usuario.getCorreo(),
                 usuario.getClave(), authorities);
     }
 
@@ -77,4 +76,7 @@ public class UserDetailsImpl implements UserDetails {
         return email;
     }
 
+    public Long getId() {
+        return id;
+    }
 }

@@ -8,11 +8,21 @@ import com.pragma.usuariomicroservice.domain.spi.IRolPersistencePort;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class RolMysqlAdapter implements IRolPersistencePort {
     private final IRolRepository rolRepository;
     private final RolEntityMapper rolEntityMapper;
+
+    @Override
+    public Rol getRol(Long id) {
+        Optional<RolEntity> rolEntity = rolRepository.findById(id);
+        if(rolEntity.isEmpty()){
+            //exception
+        }
+        return rolEntityMapper.rolEntityToRol(rolEntity.get());
+    }
 
     @Override
     public List<Rol> getRoles() {
