@@ -21,11 +21,13 @@ public class JWTAutorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+
         String token = getToken(request);
-        if(token != null && tokenUtils.validateToken(token)){
+        if(tokenUtils.validateToken(token)){
             UsernamePasswordAuthenticationToken usernamePAT = tokenUtils.getAuthetication(token);
             SecurityContextHolder.getContext().setAuthentication(usernamePAT);
         }
+
         filterChain.doFilter(request,response);
     }
     private String getToken(HttpServletRequest request) {

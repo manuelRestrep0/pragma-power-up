@@ -4,6 +4,8 @@ import com.pragma.usuariomicroservice.adapters.http.dto.request.AuthRequestDto;
 import com.pragma.usuariomicroservice.adapters.http.dto.response.JwtResponseDto;
 import com.pragma.usuariomicroservice.adapters.http.handlers.IAuthHandler;
 import com.pragma.usuariomicroservice.configuration.security.jwt.TokenUtils;
+import com.pragma.usuariomicroservice.domain.api.IAuthServicePort;
+import com.pragma.usuariomicroservice.domain.usecase.Token;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthHandlerImpl implements IAuthHandler {
+public class AuthHandlerImpl implements IAuthHandler, IAuthServicePort {
 
     private final AuthenticationManager authenticationManager;
     private final TokenUtils tokenUtils;
@@ -23,6 +25,16 @@ public class AuthHandlerImpl implements IAuthHandler {
                 new UsernamePasswordAuthenticationToken(authRequestDto.getCorreo(),authRequestDto.getPassword())
         );
         String jwt = tokenUtils.createToken(authentication);
-        return new JwtResponseDto(jwt,tokenUtils.getRolesFromToken(jwt));
+        Token.setToken(jwt);
+        return new JwtResponseDto(jwt);
+    }
+
+    @Override
+    public String obtenerIdUsuario(String token) {
+        return tokenUtils.getIdFromToken(token);
+    }
+    @Override
+    public String obtenerRolUsuario(String token) {
+        return tokenUtils.getRolesFromToken(token);
     }
 }

@@ -1,6 +1,7 @@
 package com.pragma.usuariomicroservice.domain.usecase;
 
 import com.pragma.usuariomicroservice.configuration.Constants;
+import com.pragma.usuariomicroservice.domain.api.IAuthServicePort;
 import com.pragma.usuariomicroservice.domain.api.IUsuarioServicePort;
 import com.pragma.usuariomicroservice.domain.model.Rol;
 import com.pragma.usuariomicroservice.domain.model.Usuario;
@@ -11,14 +12,19 @@ public class UsuarioUseCase implements IUsuarioServicePort {
 
     private final IUsuarioPersistencePort usuarioPersistencePort;
     private final IRolPersistencePort rolPersistencePort;
+    private final IAuthServicePort authServicePort;
 
-    public UsuarioUseCase(IUsuarioPersistencePort usuarioPersistencePort, IRolPersistencePort rolPersistencePort) {
+    public UsuarioUseCase(IUsuarioPersistencePort usuarioPersistencePort, IRolPersistencePort rolPersistencePort, IAuthServicePort authServicePort) {
         this.usuarioPersistencePort = usuarioPersistencePort;
         this.rolPersistencePort = rolPersistencePort;
+        this.authServicePort = authServicePort;
     }
 
     @Override
     public void guardarPropietario(Usuario usuario) {
+        String rolUsuarioActual = authServicePort.obtenerRolUsuario(Token.getToken());
+        ValidacionPermisos validacionPermisos = new ValidacionPermisos();
+        validacionPermisos.validarRol(rolUsuarioActual,Constants.ROL_ADMINISTRADOR);
         Rol rol = rolPersistencePort.getRol(Constants.PROPIETARIO_ROL_ID);
         usuario.setIdRol(rol);
         this.usuarioPersistencePort.guardarUsuario(usuario);

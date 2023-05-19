@@ -5,4 +5,6 @@ import com.pragma.usuariomicroservice.adapters.http.dto.response.JwtResponseDto;
 
 public interface IAuthHandler {
     JwtResponseDto login(AuthRequestDto authRequestDto);
+    String obtenerIdUsuario(String token);
+    String obtenerRolUsuario(String token);
 }

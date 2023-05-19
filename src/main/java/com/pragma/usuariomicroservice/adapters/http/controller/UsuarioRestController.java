@@ -1,9 +1,9 @@
 package com.pragma.usuariomicroservice.adapters.http.controller;
 
-import com.pragma.usuariomicroservice.adapters.http.dto.request.JwtToken;
 import com.pragma.usuariomicroservice.adapters.http.dto.request.UsuarioRequestDto;
 import com.pragma.usuariomicroservice.adapters.http.handlers.IUsuarioHandler;
 import com.pragma.usuariomicroservice.configuration.Constants;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,19 +46,11 @@ public class UsuarioRestController {
                 Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY,Constants.PROPIETARIO_CREADO_MENSAJE)
         );
     }
+    @Hidden
     @GetMapping("/validar-propietario/{id}")
     public Boolean validarRolPropietario(@PathVariable("id") Long id){
         return usuarioHandler.validarPropietario(id);
     }
 
-    @GetMapping("/obtenerToken")
-    public JwtToken obtenerToken(@RequestHeader("Authorization") String authorizationHeader) {
-        // Aquí procesas el encabezado y extraes el JWT
-        String jwt = authorizationHeader.replace("Bearer ", "");
-        // Crea un objeto JwtToken y establece el JWT obtenido
-        JwtToken token = new JwtToken();
-        token.setToken(jwt);
-        return token;
-    }
 
 }

@@ -25,14 +25,13 @@ import java.util.Map;
 
 @Component
 public class TokenUtils {
-    private final static Logger logger = LoggerFactory.getLogger(TokenUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(TokenUtils.class);
     @Value("${jwt.secret}")
     private String secret;
     @Value("${jwt.expiration}")
     private Long expiration = 3600000L;
 
     public String createToken(Authentication authentication){
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetailsImpl usuario = (UserDetailsImpl) authentication.getPrincipal();
         Long id= usuario.getId();
@@ -85,5 +84,10 @@ public class TokenUtils {
     }
     public String getRolesFromToken(String token) {
         return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody().get("rol",String.class);
+    }
+    public String getIdFromToken(String token) {
+        Integer id = Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody().get("id usuario",Integer.class);
+        //System.out.println(id);
+        return String.valueOf(id);
     }
 }

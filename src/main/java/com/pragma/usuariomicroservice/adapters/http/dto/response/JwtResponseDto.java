@@ -1,16 +1,8 @@
 package com.pragma.usuariomicroservice.adapters.http.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
-
-@AllArgsConstructor
-@Getter
-@Setter
 public class JwtResponseDto {
     private String token;
-    private String roles;
 
     public JwtResponseDto() {
     }
