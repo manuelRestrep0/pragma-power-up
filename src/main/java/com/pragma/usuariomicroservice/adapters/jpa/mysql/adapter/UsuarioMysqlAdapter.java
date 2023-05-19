@@ -9,6 +9,7 @@ import com.pragma.usuariomicroservice.configuration.Constants;
 import com.pragma.usuariomicroservice.domain.model.Usuario;
 import com.pragma.usuariomicroservice.domain.spi.IUsuarioPersistencePort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
 
@@ -24,6 +25,7 @@ public class UsuarioMysqlAdapter implements IUsuarioPersistencePort {
         if(usuarioRepository.findUsuarioEntityByNumeroDocumento(usuario.getNumeroDocumento()).isPresent()){
             throw new UsuarioYaExistenteException(Constants.USUARIO_YA_EXISTE_DOCUMENTO);
         }
+        usuario.setClave(new BCryptPasswordEncoder().encode(usuario.getClave()));
         this.usuarioRepository.save(usuarioEntityMapper.toEntity(usuario));
     }
 

@@ -3,10 +3,12 @@ package com.pragma.usuariomicroservice.adapters.http.controller;
 import com.pragma.usuariomicroservice.adapters.http.dto.request.UsuarioRequestDto;
 import com.pragma.usuariomicroservice.adapters.http.handlers.IUsuarioHandler;
 import com.pragma.usuariomicroservice.configuration.Constants;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/usuario")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "jwt")
 public class UsuarioRestController {
 
     private final IUsuarioHandler usuarioHandler;
@@ -43,10 +46,11 @@ public class UsuarioRestController {
                 Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY,Constants.PROPIETARIO_CREADO_MENSAJE)
         );
     }
-
+    @Hidden
     @GetMapping("/validar-propietario/{id}")
     public Boolean validarRolPropietario(@PathVariable("id") Long id){
         return usuarioHandler.validarPropietario(id);
     }
+
 
 }

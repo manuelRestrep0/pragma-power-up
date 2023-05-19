@@ -16,23 +16,19 @@ public class IUsuarioHandlerImpl implements IUsuarioHandler {
     private final IUsuarioServicePort usuarioServicePort;
     private final IUsuarioRequestMapper usuarioRequestMapper;
     private final IUsuarioResponseMapper usuarioResponseMapper;
-
     @Override
     public void savePropietario(UsuarioRequestDto usuarioRequestDto) {
         Usuario usuario = usuarioRequestMapper.toUsuario(usuarioRequestDto);
         usuarioServicePort.guardarPropietario(usuario);
     }
-
     @Override
     public void deleteUsuario(UsuarioRequestDto usuarioRequestDto) {
         usuarioServicePort.deleteUsuario(usuarioRequestMapper.toUsuario(usuarioRequestDto));
     }
-
     @Override
     public UsuarioResponseDto getUsuario(Long id) {
         return usuarioResponseMapper.usuarioToUsuarioResponse(usuarioServicePort.getUsuario(id));
     }
-
     @Override
     public Boolean validarPropietario(Long id) {
         return usuarioServicePort.validarPropietario(id);
