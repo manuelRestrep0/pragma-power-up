@@ -32,6 +32,7 @@ public class UsuarioUseCase implements IUsuarioServicePort {
 
     @Override
     public void guardarCliente(Usuario usuario) {
+        //ROL CLIENTE
         Rol rol = rolPersistencePort.getRol(Constants.CLIENTE_ROL_ID);
         usuario.setIdRol(rol);
         this.usuarioPersistencePort.guardarUsuario(usuario);

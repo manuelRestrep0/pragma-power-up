@@ -1,5 +1,7 @@
 package com.pragma.usuariomicroservice.domain;
 
+import com.pragma.usuariomicroservice.domain.api.IAuthServicePort;
+import com.pragma.usuariomicroservice.domain.exceptions.UsuarioNoAutorizadoException;
 import com.pragma.usuariomicroservice.domain.model.Rol;
 import com.pragma.usuariomicroservice.domain.model.Usuario;
 import com.pragma.usuariomicroservice.domain.spi.IRolPersistencePort;
@@ -26,6 +28,8 @@ class UsuarioUseCaseTest {
     IUsuarioPersistencePort usuarioPersistencePort;
     @MockBean
     IRolPersistencePort rolPersistencePort;
+    @MockBean
+    IAuthServicePort authServicePort;
     @InjectMocks
     @Autowired
     UsuarioUseCase usuarioUseCase;
@@ -46,24 +50,21 @@ class UsuarioUseCaseTest {
         );
     }
 
-   /*
-    @ParameterizedTest(name = "Valor: {0} , la funcion debe retornar NoEsMayorDeEdadException")
-    @DisplayName("Cuando la fecha de nacimiento no corresponde a la de una persona que es mayor de edad" +
-            " no se puede crear el usuario con el rol de propietario.")
-    @ValueSource(strings = {"21-09-2020","19-05-2014","07-07-2019"})
-    void creacionPropietarioNoEsMayorDeEdad(String fecha) {
-        usuario.setFechaNacimiento(fecha);
-
-        assertThrows(NoEsMayorDeEdadException.class, () -> usuarioUseCase.guardarPropietario(usuario));
-    }
-       */
     @Test
     void crearPropietario(){
+        when(authServicePort.obtenerRolUsuario(any())).thenReturn("ROLE_ADMINISTRADOR");
         when(rolPersistencePort.getRol(any())).thenReturn(new Rol());
 
         usuarioUseCase.guardarPropietario(usuario);
 
         verify(usuarioPersistencePort).guardarUsuario(usuario);
+    }
+    @Test
+    void crearPropietarioRolNoAutorizado(){
+        when(authServicePort.obtenerRolUsuario(any())).thenReturn("ROLE_PROPIETARIO");
+        when(rolPersistencePort.getRol(any())).thenReturn(new Rol());
+
+        assertThrows(UsuarioNoAutorizadoException.class, () -> usuarioUseCase.guardarPropietario(usuario));
     }
 
     @Test

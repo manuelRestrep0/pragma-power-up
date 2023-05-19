@@ -42,7 +42,22 @@ public class UsuarioRequestDtoTest {
                 "12345"
         );
     }
-    @ParameterizedTest(name = "Valor: {0} , la funcion debe retornar CorreoMalFormuladoException")
+    @ParameterizedTest(name = "Valor: {0} , la funcion debe retornar NoEsMayorDeEdadException")
+    @DisplayName("Cuando la fecha de nacimiento no corresponde a la de una persona que es mayor de edad" +
+            " no se puede crear el usuario con el rol de propietario.")
+    @ValueSource(strings = {"21-09-2020","19-05-2014","07-07-2019"})
+    void creacionPropietarioNoEsMayorDeEdad(String fecha) {
+        usuarioRequestDto.setFechaNacimiento(fecha);
+
+        Set<ConstraintViolation<UsuarioRequestDto>> violations = validator.validate(usuarioRequestDto);
+        assertEquals(true, !violations.isEmpty());
+        for (ConstraintViolation<UsuarioRequestDto> violation: violations
+        ) {
+            violation = violations.iterator().next();
+            assertEquals("fechaNacimiento",violation.getPropertyPath().toString());
+        }
+    }
+    @ParameterizedTest(name = "Valor: {0}")
     @DisplayName("Cuando el correo esta mal formulado, es decir, " +
             "no cumple el formato de algo@algo.algo se lanza una exception de" +
             "tipo CorreoMalFormuladoException")
