@@ -11,6 +11,28 @@ URL swagger: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080
 
 ## EndPoints: 
 
+### Login: /auth/login POST
+
+Se debe proteger algunos endpoints para que no cualquier usuario pueda realizar cambios en la base de datos, por lo tanto 
+se implementó un endpoint para logearse con el correo y contraseña que diligencia en la creación de su usuario.
+
+El endpoint devuelve un token y es necesario utilizar ese token para que se habiliten los endpoints protegidos.
+
+El endpoint recibe de la siguiente manera los datos de inicio de sesión:
+```java {.highlight .highlight-source-java .bg-black}
+    {
+        "correo": [tu direccion de correo electronico],
+        "password": [tu contrasena]
+    }
+```
+
+la petición no se realizara si falta un campo de los anteriores, ademas, se verifica con la base de datos que la contraseña si corresponsa a ese correo 
+para devolver el token, de lo contrario se lanzará una exception.
+
+Para probar la funcionalidad de este endpoint, puede crear un usuario de tipo cliente que no requiere permisos y, luego de crearlo correctamente, 
+probar el correo y la contraseña que ingresó y debería devolverle un token que, si lo descripta en la pagina jwt.io debe mostrarle información 
+que ingresó en la creación del usuario.
+
 ### Crear propietario: /usuario/propietario  POST
 
 Este endPoint se encarga de crear el propietario, validar los datos ingresados, asignarle el rol de 
@@ -47,3 +69,4 @@ La respuesta que devuelve el endPoint al hacer bien la solicitud es la siguiente
   "mensaje": "El propietario fue creado satisfactoriamente."
 }
 ```
+
