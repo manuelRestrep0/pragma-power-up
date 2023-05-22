@@ -97,5 +97,29 @@ class UsuarioUseCaseTest {
 
         assertFalse(respuesta);
     }
+    @Test
+    void crearEmpleado(){
+        when(authServicePort.obtenerRolUsuario(any())).thenReturn("ROLE_PROPIETARIO");
+        when(rolPersistencePort.getRol(any())).thenReturn(new Rol());
+
+        usuarioUseCase.guardarEmpleado(usuario);
+
+        verify(usuarioPersistencePort).guardarUsuario(usuario);
+    }
+    @Test
+    void crearEmpleadoNoAutorizado() {
+        when(authServicePort.obtenerRolUsuario(any())).thenReturn("ROLE_CLIENTE");
+        when(rolPersistencePort.getRol(any())).thenReturn(new Rol());
+
+        assertThrows(UsuarioNoAutorizadoException.class, () -> usuarioUseCase.guardarEmpleado(usuario));
+    }
+    @Test
+    void crearCliente(){
+        when(rolPersistencePort.getRol(any())).thenReturn(new Rol());
+
+        usuarioUseCase.guardarCliente(usuario);
+
+        verify(usuarioPersistencePort).guardarUsuario(usuario);
+    }
 
 }

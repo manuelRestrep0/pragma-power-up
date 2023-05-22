@@ -25,6 +25,7 @@ public class UsuarioUseCase implements IUsuarioServicePort {
         String rolUsuarioActual = authServicePort.obtenerRolUsuario(Token.getToken());
         ValidacionPermisos validacionPermisos = new ValidacionPermisos();
         validacionPermisos.validarRol(rolUsuarioActual,Constants.ROL_ADMINISTRADOR);
+
         Rol rol = rolPersistencePort.getRol(Constants.PROPIETARIO_ROL_ID);
         usuario.setIdRol(rol);
         this.usuarioPersistencePort.guardarUsuario(usuario);
@@ -40,9 +41,13 @@ public class UsuarioUseCase implements IUsuarioServicePort {
 
     @Override
     public void guardarEmpleado(Usuario usuario) {
-        //solo el propietario puede crear empleados para su empresa.
-        //TODO: hacer conexion con el microservicio de plazoleta para verificar que el restaurante es
-        //propiedad del propietario.
+        String rolUsuarioActual = authServicePort.obtenerRolUsuario(Token.getToken());
+        ValidacionPermisos validacionPermisos = new ValidacionPermisos();
+        validacionPermisos.validarRol(rolUsuarioActual,Constants.ROL_PROPIETARIO);
+
+        Rol rol = rolPersistencePort.getRol(Constants.EMPLEADO_ROL_ID);
+        usuario.setIdRol(rol);
+        this.usuarioPersistencePort.guardarUsuario(usuario);
     }
 
     @Override

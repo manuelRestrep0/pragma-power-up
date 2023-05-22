@@ -40,10 +40,38 @@ public class UsuarioRestController {
     })
     @PostMapping("/propietario")
     public ResponseEntity<Map<String, String>> crearPropietario(@Valid @RequestBody UsuarioRequestDto usuarioRequestDto){
-        //ROL DE ADMINISTRADOR
+        //TODO: devolver un mensaje mas personalizado a la hora de crear un usuario junto al id de este.
         usuarioHandler.savePropietario(usuarioRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY,Constants.PROPIETARIO_CREADO_MENSAJE)
+        );
+    }
+    @Operation(summary = "Agregar un nuevo empleado",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Empleado creado",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
+                    @ApiResponse(responseCode = "409", description = "Empleado ya existente",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))
+            })
+    @PostMapping("/empleado")
+    public ResponseEntity<Map<String,String>> crearEmpleado(@Valid @RequestBody UsuarioRequestDto usuarioRequestDto){
+        usuarioHandler.saveEmpleado(usuarioRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY,"Empleado creado")
+        );
+    }
+    @Operation(summary = "Agregar un nuevo Cliente",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Cliente creado",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
+                    @ApiResponse(responseCode = "409", description = "Cliente ya existente",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))
+            })
+    @PostMapping("/cliente")
+    public ResponseEntity<Map<String,String>> crearCliente(@Valid @RequestBody UsuarioRequestDto usuarioRequestDto){
+        usuarioHandler.saveCliente(usuarioRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY,"Cliente creado")
         );
     }
     @Hidden
