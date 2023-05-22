@@ -6,6 +6,8 @@ import com.pragma.usuariomicroservice.adapters.http.dto.response.UsuarioResponse
 public interface IUsuarioHandler {
 
     void savePropietario(UsuarioRequestDto usuarioRequestDto);
+    void saveEmpleado(UsuarioRequestDto usuarioRequestDto);
+    void saveCliente(UsuarioRequestDto usuarioRequestDto);
 
     void deleteUsuario(UsuarioRequestDto usuarioRequestDto);
 

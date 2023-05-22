@@ -21,6 +21,17 @@ public class IUsuarioHandlerImpl implements IUsuarioHandler {
         Usuario usuario = usuarioRequestMapper.toUsuario(usuarioRequestDto);
         usuarioServicePort.guardarPropietario(usuario);
     }
+
+    @Override
+    public void saveEmpleado(UsuarioRequestDto usuarioRequestDto) {
+        usuarioServicePort.guardarEmpleado(usuarioRequestMapper.toUsuario(usuarioRequestDto));
+    }
+
+    @Override
+    public void saveCliente(UsuarioRequestDto usuarioRequestDto) {
+        usuarioServicePort.guardarCliente(usuarioRequestMapper.toUsuario(usuarioRequestDto));
+    }
+
     @Override
     public void deleteUsuario(UsuarioRequestDto usuarioRequestDto) {
         usuarioServicePort.deleteUsuario(usuarioRequestMapper.toUsuario(usuarioRequestDto));

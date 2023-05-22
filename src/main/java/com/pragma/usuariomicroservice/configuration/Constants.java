@@ -11,6 +11,7 @@ public class Constants {
     public static final Long PROPIETARIO_ROL_ID = 3l;
     public static final Long ADMINISTRADOR_ROL_ID = 4L;
     public static final String ROL_ADMINISTRADOR = "ROLE_ADMINISTRADOR";
+    public static final String ROL_PROPIETARIO = "ROLE_PROPIETARIO";
     public static final String USUARIO_NO_REGISTRADO = "El usuario no se encuentra registrado";
     public static final String RESPONSE_MESSAGE_KEY = "mensaje";
     public static final String PROPIETARIO_CREADO_MENSAJE = "El propietario fue creado satisfactoriamente.";
