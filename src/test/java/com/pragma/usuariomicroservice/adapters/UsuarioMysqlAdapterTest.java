@@ -2,7 +2,7 @@ package com.pragma.usuariomicroservice.adapters;
 
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.adapter.UsuarioMysqlAdapter;
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.entity.UsuarioEntity;
-import com.pragma.usuariomicroservice.adapters.jpa.mysql.exceptions.UsuarioYaExistenteException;
+import com.pragma.usuariomicroservice.domain.exceptions.UsuarioYaExistenteException;
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.mapper.UsuarioEntityMapper;
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.repository.IUsuarioRepository;
 import com.pragma.usuariomicroservice.domain.model.Rol;

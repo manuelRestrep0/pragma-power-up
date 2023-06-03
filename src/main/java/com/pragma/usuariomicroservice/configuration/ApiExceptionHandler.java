@@ -5,8 +5,8 @@ import com.pragma.usuariomicroservice.adapters.http.exceptions.CorreoMalFormulad
 import com.pragma.usuariomicroservice.adapters.http.exceptions.DocumentoMalFormuladoException;
 import com.pragma.usuariomicroservice.adapters.http.exceptions.FechaNacimientoMalFormatoException;
 import com.pragma.usuariomicroservice.adapters.http.exceptions.NoEsMayorDeEdadException;
-import com.pragma.usuariomicroservice.adapters.http.exceptions.UsuarioNoSeEncuentraRegistradoException;
-import com.pragma.usuariomicroservice.adapters.jpa.mysql.exceptions.UsuarioYaExistenteException;
+import com.pragma.usuariomicroservice.domain.exceptions.UsuarioNoSeEncuentraRegistradoException;
+import com.pragma.usuariomicroservice.domain.exceptions.UsuarioYaExistenteException;
 import com.pragma.usuariomicroservice.domain.exceptions.UsuarioNoAutorizadoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

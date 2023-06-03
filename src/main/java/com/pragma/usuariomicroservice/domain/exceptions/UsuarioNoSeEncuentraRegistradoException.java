@@ -1,4 +1,4 @@
-package com.pragma.usuariomicroservice.adapters.http.exceptions;
+package com.pragma.usuariomicroservice.domain.exceptions;
 
 public class UsuarioNoSeEncuentraRegistradoException extends RuntimeException{
 
