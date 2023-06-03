@@ -1,4 +1,4 @@
-package com.pragma.usuariomicroservice.adapters.jpa.mysql.exceptions;
+package com.pragma.usuariomicroservice.domain.exceptions;
 
 public class UsuarioYaExistenteException extends RuntimeException{
 

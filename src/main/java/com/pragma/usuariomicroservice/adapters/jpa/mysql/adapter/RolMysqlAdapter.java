@@ -18,18 +18,12 @@ public class RolMysqlAdapter implements IRolPersistencePort {
     @Override
     public Rol getRol(Long id) {
         Optional<RolEntity> rolEntity = rolRepository.findById(id);
-        if(rolEntity.isEmpty()){
-            //exception
-        }
         return rolEntityMapper.rolEntityToRol(rolEntity.get());
     }
 
     @Override
     public List<Rol> getRoles() {
         List<RolEntity> rolEntityList = rolRepository.findAll();
-        if(rolEntityList.isEmpty()) {
-            // exception
-        }
         return rolEntityMapper.toRolList(rolEntityList);
     }
 }

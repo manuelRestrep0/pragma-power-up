@@ -4,6 +4,7 @@ import com.pragma.usuariomicroservice.adapters.http.dto.request.AuthRequestDto;
 import com.pragma.usuariomicroservice.adapters.http.dto.response.JwtResponseDto;
 import com.pragma.usuariomicroservice.adapters.http.handlers.IAuthHandler;
 import io.swagger.v3.oas.annotations.Hidden;
+import jakarta.servlet.ServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class AuthController {
     private final IAuthHandler authHandler;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponseDto> login(@RequestBody @Valid AuthRequestDto authRequestDto) {
+    public ResponseEntity<JwtResponseDto> login(@RequestBody @Valid AuthRequestDto authRequestDto, ServletRequest request) {
         return new ResponseEntity<>(authHandler.login(authRequestDto), HttpStatus.OK);
     }
     @Hidden

@@ -23,7 +23,7 @@ public class JWTAutorizationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String token = getToken(request);
-        if(tokenUtils.validateToken(token)){
+        if(!token.isEmpty() && tokenUtils.validateToken(token)){
             UsernamePasswordAuthenticationToken usernamePAT = tokenUtils.getAuthetication(token);
             SecurityContextHolder.getContext().setAuthentication(usernamePAT);
         }
