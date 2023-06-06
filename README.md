@@ -41,6 +41,7 @@ propietario y luego guardar esos datos en la base de datos.
 
 Para crear el propietario recuerde que:
 
+Debe estar logeado con un usuario administrador.
 
 el numero de documento debe ser numerico y positivo, el celular debe ser numerico y el prefijo (+numero del pais) es opcional,
 el correo debe ser un correo valido, y la fecha de nacimiento debe ser una fecha no mayor a la actual, con el formato de 
@@ -68,5 +69,42 @@ La respuesta que devuelve el endPoint al hacer bien la solicitud es la siguiente
 {
   "mensaje": "El propietario fue creado satisfactoriamente."
 }
+```
+
+### Crear Empleado usuario/empleado  POST
+
+Para crear un empleado debe estar logeado con un usuario con el rol de propietario.
+
+Ejemplo del cuerpo de la peticion: 
+
+```java {.highlight .highlight-source-java .bg-black}
+    {
+    "nombre": "string",
+    "apellido": "string",
+    "correo": "string",
+    "numeroDocumento": "string",
+    "celular": "string",
+    "fechaNacimiento": "string",
+    "clave": "string"
+    }
+```
+
+### Crear cliente usuario/cliente   POST
+
+Para crear un cliente no necesita estar logeado, solo es necesario llenar todos los campos con los requisitos
+obligatiorios para registrar un usuario.
+
+Ejemplo del cuerpo de la peticion: 
+
+```java {.highlight .highlight-source-java .bg-black}
+    {
+    "nombre": "string",
+    "apellido": "string",
+    "correo": "string",
+    "numeroDocumento": "string",
+    "celular": "string",
+    "fechaNacimiento": "string",
+    "clave": "string"
+    }
 ```
 
