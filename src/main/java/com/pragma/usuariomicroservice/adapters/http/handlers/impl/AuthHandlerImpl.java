@@ -5,7 +5,6 @@ import com.pragma.usuariomicroservice.adapters.http.dto.response.JwtResponseDto;
 import com.pragma.usuariomicroservice.adapters.http.handlers.IAuthHandler;
 import com.pragma.usuariomicroservice.configuration.security.jwt.TokenUtils;
 import com.pragma.usuariomicroservice.domain.api.IAuthServicePort;
-import com.pragma.usuariomicroservice.domain.usecase.Token;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +24,6 @@ public class AuthHandlerImpl implements IAuthHandler, IAuthServicePort {
                 new UsernamePasswordAuthenticationToken(authRequestDto.getCorreo(),authRequestDto.getPassword())
         );
         String jwt = tokenUtils.createToken(authentication);
-        Token.setToken(jwt);
         return new JwtResponseDto(jwt);
     }
 

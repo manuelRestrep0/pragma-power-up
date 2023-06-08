@@ -1,4 +1,4 @@
-package com.pragma.usuariomicroservice.domain.usecase;
+package com.pragma.usuariomicroservice.domain.utilidades;
 
 public class Token {
     private static String token;

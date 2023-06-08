@@ -3,7 +3,7 @@ package com.pragma.usuariomicroservice.adapters.jpa.mysql.adapter;
 import com.pragma.usuariomicroservice.domain.exceptions.UsuarioNoSeEncuentraRegistradoException;
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.entity.UsuarioEntity;
 import com.pragma.usuariomicroservice.adapters.jpa.mysql.repository.IUsuarioRepository;
-import com.pragma.usuariomicroservice.domain.usecase.Constantes;
+import com.pragma.usuariomicroservice.domain.utilidades.Constantes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
