@@ -2,6 +2,7 @@ package com.pragma.usuariomicroservice.adapters.http.controller;
 
 import com.pragma.usuariomicroservice.adapters.http.dto.request.UsuarioRequestDto;
 import com.pragma.usuariomicroservice.adapters.http.handlers.IUsuarioHandler;
+import com.pragma.usuariomicroservice.adapters.http.utilidades.JwtUtilidades;
 import com.pragma.usuariomicroservice.configuration.Constants;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,7 @@ import java.util.Map;
 public class UsuarioRestController {
 
     private final IUsuarioHandler usuarioHandler;
+    private final HttpServletRequest request;
 
     @Operation(summary = "Agregar un nuevo propietario",
     responses = {
@@ -40,7 +43,8 @@ public class UsuarioRestController {
     })
     @PostMapping("/propietario")
     public ResponseEntity<Map<String, String>> crearPropietario(@Valid @RequestBody UsuarioRequestDto usuarioRequestDto){
-        //TODO: devolver un mensaje mas personalizado a la hora de crear un usuario junto al id de este.
+        String token = request.getHeader("Authorization");
+        JwtUtilidades.extraerToken(token);
         usuarioHandler.savePropietario(usuarioRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY,Constants.PROPIETARIO_CREADO_MENSAJE)
@@ -55,6 +59,8 @@ public class UsuarioRestController {
             })
     @PostMapping("/empleado")
     public ResponseEntity<Map<String,String>> crearEmpleado(@Valid @RequestBody UsuarioRequestDto usuarioRequestDto){
+        String token = request.getHeader("Authorization");
+        JwtUtilidades.extraerToken(token);
         usuarioHandler.saveEmpleado(usuarioRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY,"Empleado creado")
@@ -80,5 +86,9 @@ public class UsuarioRestController {
         return usuarioHandler.validarPropietario(id);
     }
 
+    @GetMapping("/obtener-correo-usuario/{id}")
+    public String obtenerCorreoFromUsuario(@PathVariable("id") Long id){
+        return usuarioHandler.obtenerCorreoFromUsuario(id);
+    }
 
 }

@@ -87,7 +87,6 @@ public class TokenUtils {
     }
     public String getIdFromToken(String token) {
         Integer id = Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody().get("id usuario",Integer.class);
-        //System.out.println(id);
         return String.valueOf(id);
     }
 }

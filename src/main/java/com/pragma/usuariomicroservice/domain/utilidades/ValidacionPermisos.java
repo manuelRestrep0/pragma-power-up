@@ -1,4 +1,4 @@
-package com.pragma.usuariomicroservice.domain.usecase;
+package com.pragma.usuariomicroservice.domain.utilidades;
 
 import com.pragma.usuariomicroservice.domain.exceptions.UsuarioNoAutorizadoException;
 

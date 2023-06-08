@@ -40,4 +40,14 @@ public class UsuarioMysqlAdapter implements IUsuarioPersistencePort {
     public Boolean usuarioDocumentoExiste(String documento) {
         return usuarioRepository.existsByNumeroDocumento(documento);
     }
+
+    @Override
+    public String obtenerCorreoFromUsuario(Long idUsuario) {
+        Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findById(idUsuario);
+        String correoUsuario = "";
+        if(usuarioEntity.isPresent()){
+            correoUsuario = usuarioEntity.get().getCorreo();
+        }
+        return correoUsuario;
+    }
 }
