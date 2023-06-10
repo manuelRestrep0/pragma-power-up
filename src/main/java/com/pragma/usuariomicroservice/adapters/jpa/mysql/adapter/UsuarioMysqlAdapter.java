@@ -16,9 +16,11 @@ public class UsuarioMysqlAdapter implements IUsuarioPersistencePort {
     private final UsuarioEntityMapper usuarioEntityMapper;
 
     @Override
-    public void guardarUsuario(Usuario usuario) {
+    public Long guardarUsuario(Usuario usuario) {
         usuario.setClave(new BCryptPasswordEncoder().encode(usuario.getClave()));
-        this.usuarioRepository.save(usuarioEntityMapper.toEntity(usuario));
+        UsuarioEntity usuarioEntity = usuarioEntityMapper.toEntity(usuario);
+        this.usuarioRepository.save(usuarioEntity);
+        return usuarioEntity.getId();
     }
 
     @Override

@@ -6,7 +6,7 @@ public interface IUsuarioServicePort {
 
     void guardarPropietario(Usuario usuario);
     void guardarCliente(Usuario usuario);
-    void guardarEmpleado(Usuario usuario);
+    void guardarEmpleado(Usuario usuario, Long idRestaurante);
     Boolean validarPropietario(Long id);
     String obtenerCorreoFromUsuario(Long idUsuario);
 }

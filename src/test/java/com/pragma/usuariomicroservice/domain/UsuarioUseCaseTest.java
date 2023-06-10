@@ -1,6 +1,7 @@
 package com.pragma.usuariomicroservice.domain;
 
 import com.pragma.usuariomicroservice.domain.api.IAuthServicePort;
+import com.pragma.usuariomicroservice.domain.api.IPlazoletaServicePort;
 import com.pragma.usuariomicroservice.domain.exceptions.UsuarioNoAutorizadoException;
 import com.pragma.usuariomicroservice.domain.exceptions.UsuarioNoSeEncuentraRegistradoException;
 import com.pragma.usuariomicroservice.domain.exceptions.UsuarioYaExistenteException;
@@ -33,6 +34,8 @@ class UsuarioUseCaseTest {
     IRolPersistencePort rolPersistencePort;
     @MockBean
     IAuthServicePort authServicePort;
+    @MockBean
+    IPlazoletaServicePort plazoletaServicePort;
     @InjectMocks
     @Autowired
     UsuarioUseCase usuarioUseCase;
@@ -159,6 +162,8 @@ class UsuarioUseCaseTest {
     @Test
     void guardarEmpleadoCasoExitoso(){
         when(authServicePort.obtenerRolUsuario(any())).thenReturn("ROLE_PROPIETARIO");
+        when(plazoletaServicePort.verificarPropietarioRestaurante(any(),any())).thenReturn(true);
+        when(usuarioPersistencePort.guardarUsuario(any())).thenReturn(1L);
         when(usuarioPersistencePort.usuarioCorreoExiste(any())).thenReturn(false);
         when(usuarioPersistencePort.usuarioDocumentoExiste(any())).thenReturn(false);
         when(rolPersistencePort.getRol(any())).thenReturn(new Rol
@@ -167,8 +172,9 @@ class UsuarioUseCaseTest {
                         "EMPLEADO",
                         "ROL DE EMPLEADO"
                 ));
+        Long idRestaurante = 1L;
 
-        usuarioUseCase.guardarEmpleado(usuario);
+        usuarioUseCase.guardarEmpleado(usuario, idRestaurante);
         String rolRespuesta = usuario.getIdRol().getNombre();
         String rolEsperado = "EMPLEADO";
 
@@ -177,6 +183,8 @@ class UsuarioUseCaseTest {
     @Test
     void guardarEmpleadoRolNoAutorizado(){
         when(authServicePort.obtenerRolUsuario(any())).thenReturn("ROLE_EMPLEADO");
+        when(plazoletaServicePort.verificarPropietarioRestaurante(any(),any())).thenReturn(true);
+        when(usuarioPersistencePort.guardarUsuario(any())).thenReturn(1L);
         when(usuarioPersistencePort.usuarioCorreoExiste(any())).thenReturn(false);
         when(usuarioPersistencePort.usuarioDocumentoExiste(any())).thenReturn(false);
         when(rolPersistencePort.getRol(any())).thenReturn(new Rol
@@ -185,12 +193,15 @@ class UsuarioUseCaseTest {
                         "EMPLEADO",
                         "ROL DE EMPLEADO"
                 ));
+        Long idRestaurante = 1L;
 
-        assertThrows(UsuarioNoAutorizadoException.class, () -> usuarioUseCase.guardarEmpleado(usuario));
+        assertThrows(UsuarioNoAutorizadoException.class, () -> usuarioUseCase.guardarEmpleado(usuario,idRestaurante));
     }
     @Test
     void guardarEmpleadoCorreoYaRegistrado(){
         when(authServicePort.obtenerRolUsuario(any())).thenReturn("ROLE_PROPIETARIO");
+        when(plazoletaServicePort.verificarPropietarioRestaurante(any(),any())).thenReturn(true);
+        when(usuarioPersistencePort.guardarUsuario(any())).thenReturn(1L);
         when(usuarioPersistencePort.usuarioCorreoExiste(any())).thenReturn(true);
         when(usuarioPersistencePort.usuarioDocumentoExiste(any())).thenReturn(true);
         when(rolPersistencePort.getRol(any())).thenReturn(new Rol
@@ -199,12 +210,15 @@ class UsuarioUseCaseTest {
                         "EMPLEADO",
                         "ROL DE EMPLEADO"
                 ));
+        Long idRestaurante = 1L;
 
-        assertThrows(UsuarioYaExistenteException.class, ()-> usuarioUseCase.guardarEmpleado(usuario));
+        assertThrows(UsuarioYaExistenteException.class, ()-> usuarioUseCase.guardarEmpleado(usuario,idRestaurante));
     }
     @Test
     void guardarEmpleadoDocumentoYaRegistrado(){
         when(authServicePort.obtenerRolUsuario(any())).thenReturn("ROLE_PROPIETARIO");
+        when(plazoletaServicePort.verificarPropietarioRestaurante(any(),any())).thenReturn(true);
+        when(usuarioPersistencePort.guardarUsuario(any())).thenReturn(1L);
         when(usuarioPersistencePort.usuarioCorreoExiste(any())).thenReturn(false);
         when(usuarioPersistencePort.usuarioDocumentoExiste(any())).thenReturn(true);
         when(rolPersistencePort.getRol(any())).thenReturn(new Rol
@@ -213,8 +227,26 @@ class UsuarioUseCaseTest {
                         "EMPLEADO",
                         "ROL DE EMPLEADO"
                 ));
+        Long idRestaurante = 1L;
 
-        assertThrows(UsuarioYaExistenteException.class, ()-> usuarioUseCase.guardarEmpleado(usuario));
+        assertThrows(UsuarioYaExistenteException.class, ()-> usuarioUseCase.guardarEmpleado(usuario,idRestaurante));
+    }
+    @Test
+    void guardarEmpleadoPropietarioNoAutorizado(){
+        when(authServicePort.obtenerRolUsuario(any())).thenReturn("ROLE_PROPIETARIO");
+        when(plazoletaServicePort.verificarPropietarioRestaurante(any(),any())).thenReturn(false);
+        when(usuarioPersistencePort.guardarUsuario(any())).thenReturn(1L);
+        when(usuarioPersistencePort.usuarioCorreoExiste(any())).thenReturn(false);
+        when(usuarioPersistencePort.usuarioDocumentoExiste(any())).thenReturn(false);
+        when(rolPersistencePort.getRol(any())).thenReturn(new Rol
+                (
+                        2L,
+                        "EMPLEADO",
+                        "ROL DE EMPLEADO"
+                ));
+        Long idRestaurante = 1L;
+
+        assertThrows(UsuarioNoAutorizadoException.class, ()-> usuarioUseCase.guardarEmpleado(usuario,idRestaurante));
     }
     @Test
     void validarPropietarioUsuarioPropietario(){

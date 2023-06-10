@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface IUsuarioPersistencePort {
 
-    void guardarUsuario(Usuario usuario);
+    Long guardarUsuario(Usuario usuario);
     void deleteUsuario(Usuario usuario);
     Optional<Usuario> getUsuario(Long id);
     Boolean usuarioCorreoExiste(String correo);
