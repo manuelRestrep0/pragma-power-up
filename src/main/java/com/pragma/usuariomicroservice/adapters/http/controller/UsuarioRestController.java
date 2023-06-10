@@ -1,5 +1,6 @@
 package com.pragma.usuariomicroservice.adapters.http.controller;
 
+import com.pragma.usuariomicroservice.adapters.http.dto.request.EmpleadoRequestDto;
 import com.pragma.usuariomicroservice.adapters.http.dto.request.UsuarioRequestDto;
 import com.pragma.usuariomicroservice.adapters.http.handlers.IUsuarioHandler;
 import com.pragma.usuariomicroservice.adapters.http.utilidades.JwtUtilidades;
@@ -58,10 +59,10 @@ public class UsuarioRestController {
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))
             })
     @PostMapping("/empleado")
-    public ResponseEntity<Map<String,String>> crearEmpleado(@Valid @RequestBody UsuarioRequestDto usuarioRequestDto){
+    public ResponseEntity<Map<String,String>> crearEmpleado(@Valid @RequestBody EmpleadoRequestDto empleadoRequestDto){
         String token = request.getHeader("Authorization");
         JwtUtilidades.extraerToken(token);
-        usuarioHandler.saveEmpleado(usuarioRequestDto);
+        usuarioHandler.saveEmpleado(empleadoRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY,"Empleado creado")
         );
@@ -86,6 +87,7 @@ public class UsuarioRestController {
         return usuarioHandler.validarPropietario(id);
     }
 
+    @Hidden
     @GetMapping("/obtener-correo-usuario/{id}")
     public String obtenerCorreoFromUsuario(@PathVariable("id") Long id){
         return usuarioHandler.obtenerCorreoFromUsuario(id);

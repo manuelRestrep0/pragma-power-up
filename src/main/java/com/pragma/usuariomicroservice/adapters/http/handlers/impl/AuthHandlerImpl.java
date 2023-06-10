@@ -35,4 +35,8 @@ public class AuthHandlerImpl implements IAuthHandler, IAuthServicePort {
     public String obtenerRolUsuario(String token) {
         return tokenUtils.getRolesFromToken(token);
     }
+    @Override
+    public Long obtenerIdFromToken(String token) {
+        return Long.parseLong(tokenUtils.getIdFromToken(token));
+    }
 }

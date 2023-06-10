@@ -1,5 +1,6 @@
 package com.pragma.usuariomicroservice.adapters.http.handlers.impl;
 
+import com.pragma.usuariomicroservice.adapters.http.dto.request.EmpleadoRequestDto;
 import com.pragma.usuariomicroservice.adapters.http.dto.request.UsuarioRequestDto;
 import com.pragma.usuariomicroservice.adapters.http.handlers.IUsuarioHandler;
 import com.pragma.usuariomicroservice.adapters.http.mapper.IUsuarioRequestMapper;
@@ -19,8 +20,9 @@ public class IUsuarioHandlerImpl implements IUsuarioHandler {
         usuarioServicePort.guardarPropietario(usuario);
     }
     @Override
-    public void saveEmpleado(UsuarioRequestDto usuarioRequestDto) {
-        usuarioServicePort.guardarEmpleado(usuarioRequestMapper.toUsuario(usuarioRequestDto));
+    public void saveEmpleado(EmpleadoRequestDto empleadoRequestDto) {
+        Usuario usuario = usuarioRequestMapper.toUsuario(empleadoRequestDto);
+        usuarioServicePort.guardarEmpleado(usuario, empleadoRequestDto.getIdRestaurante());
     }
     @Override
     public void saveCliente(UsuarioRequestDto usuarioRequestDto) {

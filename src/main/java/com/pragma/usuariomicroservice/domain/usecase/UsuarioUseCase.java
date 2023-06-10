@@ -1,5 +1,7 @@
 package com.pragma.usuariomicroservice.domain.usecase;
 
+import com.pragma.usuariomicroservice.domain.api.IPlazoletaServicePort;
+import com.pragma.usuariomicroservice.domain.exceptions.UsuarioNoAutorizadoException;
 import com.pragma.usuariomicroservice.domain.exceptions.UsuarioNoSeEncuentraRegistradoException;
 import com.pragma.usuariomicroservice.domain.exceptions.UsuarioYaExistenteException;
 import com.pragma.usuariomicroservice.domain.api.IAuthServicePort;
@@ -19,23 +21,25 @@ public class UsuarioUseCase implements IUsuarioServicePort {
     private final IUsuarioPersistencePort usuarioPersistencePort;
     private final IRolPersistencePort rolPersistencePort;
     private final IAuthServicePort authServicePort;
+    private final IPlazoletaServicePort plazoletaServicePort;
 
-    public UsuarioUseCase(IUsuarioPersistencePort usuarioPersistencePort, IRolPersistencePort rolPersistencePort, IAuthServicePort authServicePort) {
+    public UsuarioUseCase(IUsuarioPersistencePort usuarioPersistencePort, IRolPersistencePort rolPersistencePort, IAuthServicePort authServicePort, IPlazoletaServicePort plazoletaServicePort) {
         this.usuarioPersistencePort = usuarioPersistencePort;
         this.rolPersistencePort = rolPersistencePort;
         this.authServicePort = authServicePort;
+        this.plazoletaServicePort = plazoletaServicePort;
     }
-
     @Override
     public void guardarPropietario(Usuario usuario) {
         String rolUsuarioActual = authServicePort.obtenerRolUsuario(Token.getToken());
+
         ValidacionPermisos.validarRol(rolUsuarioActual, Constantes.ROL_ADMINISTRADOR);
 
         validarExistenciaUsuario(usuario.getCorreo(), usuario.getNumeroDocumento());
 
         Rol rol = rolPersistencePort.getRol(Constantes.PROPIETARIO_ROL_ID);
         usuario.setIdRol(rol);
-        this.usuarioPersistencePort.guardarUsuario(usuario);
+        usuarioPersistencePort.guardarUsuario(usuario);
     }
     @Override
     public void guardarCliente(Usuario usuario) {
@@ -46,7 +50,7 @@ public class UsuarioUseCase implements IUsuarioServicePort {
         this.usuarioPersistencePort.guardarUsuario(usuario);
     }
     @Override
-    public void guardarEmpleado(Usuario usuario) {
+    public void guardarEmpleado(Usuario usuario, Long idRestaurante) {
         String rolUsuarioActual = authServicePort.obtenerRolUsuario(Token.getToken());
         ValidacionPermisos.validarRol(rolUsuarioActual,Constantes.ROL_PROPIETARIO);
 
@@ -54,8 +58,14 @@ public class UsuarioUseCase implements IUsuarioServicePort {
 
         Rol rol = rolPersistencePort.getRol(Constantes.EMPLEADO_ROL_ID);
         usuario.setIdRol(rol);
-        this.usuarioPersistencePort.guardarUsuario(usuario);
 
+        Long idPropietario = authServicePort.obtenerIdFromToken(Token.getToken());
+        if(!plazoletaServicePort.verificarPropietarioRestaurante(idPropietario,idRestaurante)){
+           throw new UsuarioNoAutorizadoException("El restaurante no es de este propietario");
+        }
+        Long idEmpleado = usuarioPersistencePort.guardarUsuario(usuario);
+
+        plazoletaServicePort.registrarEmpleado(idEmpleado,idPropietario,idRestaurante);
     }
     @Override
     public Boolean validarPropietario(Long id) {
